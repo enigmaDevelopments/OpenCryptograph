@@ -1,9 +1,17 @@
-﻿namespace OpenCryptograph
+﻿using System.Diagnostics;
+
+namespace OpenCryptograph
 {
-    
-    public class Hash
+    public static class Hash
     {
-       
+       private static byte[] Keccak(int rate,int capacity, byte[] inputBytes, byte delimitedSuffix, int outputByteLen)
+        {
+            Debug.Assert(((rate + capacity) != 1600) || ((rate % 8) != 0));
+            List<byte> output = new List<byte>();
+            byte[] state = new byte[200];
+            int blockSize = 0;
+            int inputOffset = 0;
+        }
     }
 }
 // SHA3 infomation sorces:
