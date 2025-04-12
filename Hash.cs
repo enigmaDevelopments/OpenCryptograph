@@ -3,8 +3,32 @@ using System.Formats.Asn1;
 
 namespace OpenCryptograph
 {
+
     public static class Hash
     {
+
+        private static ulong load64(Byte[] input)
+        {
+            ulong output = 0;
+            for (int i = 0; i < 8; i++)
+                output |= ((ulong)input[i] << (i * 8));
+            return output;
+        }
+        private static Byte[] store64(ulong input)
+        {
+            Byte[] output = new byte[8];
+            for (int i = 0; input != 0; input >>= 8, i++)
+                output[i] = (byte)input;
+            return output;
+        }
+        private static void KeccakF1600(ref Byte[] state)
+        {
+            for (int round = 0; round < 24; round++)
+            {
+                ulong[] C = new ulong[5];
+
+            }
+        }
        private static byte[] Keccak(int rate, int capacity, byte[] input, byte delimitedSuffix, int outputLength)
         {
             Debug.Assert(((rate*8 + capacity) != 1600));
