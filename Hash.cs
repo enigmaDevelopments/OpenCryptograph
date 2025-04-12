@@ -1,20 +1,23 @@
 ﻿using System.Diagnostics;
-using System.Formats.Asn1;
 
 namespace OpenCryptograph
 {
 
     public static class Hash
     {
-
-        private static ulong load64(Byte[] input)
+        private static ulong RollLeft(ulong value, int shift)
+        {
+            shift %= 64;
+            return (value << shift) | (value >> (64 - shift));
+        }
+        private static ulong Load64(Byte[] input)
         {
             ulong output = 0;
             for (int i = 0; i < 8; i++)
                 output |= ((ulong)input[i] << (i * 8));
             return output;
         }
-        private static Byte[] store64(ulong input)
+        private static Byte[] Store64(ulong input)
         {
             Byte[] output = new byte[8];
             for (int i = 0; input != 0; input >>= 8, i++)
@@ -23,10 +26,21 @@ namespace OpenCryptograph
         }
         private static void KeccakF1600(ref Byte[] state)
         {
+            ulong[][] lanes = (from i in Enumerable.Range(0, 5) select new ulong[5]).ToArray();
+            for (int i = 0; i < 5; i++)
+                for (int j = 0; j < 5; j++)
+                    lanes[i][j] = Load64(state.Skip((j*5 + i) * 8).Take(8).ToArray());
             for (int round = 0; round < 24; round++)
             {
-                ulong[] C = new ulong[5];
-
+                #region θ
+                ulong[] C = (from lane in lanes select lane[0]^lane[1]^lane[2]^lane[3]^lane[4]).ToArray();
+                ulong[] D = new ulong[5];
+                for (int i = 0; i < 5; i++)
+                    D[i] = C[(i + 4) % 5] ^ RollLeft(C[(i + 1) % 5],1);
+                for (int i = 0; i < 5; i++)
+                    for (int j = 0; j < 5; j++)
+                        lanes[i][j] ^= D[i];
+                #endregion
             }
         }
        private static byte[] Keccak(int rate, int capacity, byte[] input, byte delimitedSuffix, int outputLength)
