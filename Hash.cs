@@ -57,6 +57,17 @@ namespace OpenCryptograph
                         current = temp;
                     }
                 }
+                #endregion
+                #region χ
+                for (int i = 0; i < 5; j++)
+                {
+                    ulong[] temp = new ulong[5];
+                    for (int j = 0; j < 5; j++)
+                        temp[j] = lanes[j][i];
+                    for (int j = 0; j < 5; j++)
+                        lanes[j][i] = temp[j] ^ ((~temp[(j + 1) % 5]) & temp[(j + 2) % 5]);
+                }
+                #endregion
             }
         }
        private static byte[] Keccak(int rate, int capacity, byte[] input, byte delimitedSuffix, int outputLength)
