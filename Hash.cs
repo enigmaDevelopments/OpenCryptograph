@@ -26,10 +26,12 @@ namespace OpenCryptograph
         }
         private static void KeccakF1600(ref Byte[] state)
         {
+            #region make lanes
             ulong[][] lanes = (from i in Enumerable.Range(0, 5) select new ulong[5]).ToArray();
             for (int i = 0; i < 5; i++)
                 for (int j = 0; j < 5; j++)
                     lanes[i][j] = Load64(state.Skip((j*5 + i) * 8).Take(8).ToArray());
+            #endregion
             byte R = 1;
             for (int round = 0; round < 24; round++)
             {
@@ -77,10 +79,14 @@ namespace OpenCryptograph
                         lanes[0][0] ^= (ulong)1 << ((1 << i)-1);
                 }
                 #endregion
-
             }
+            #region set state
+            for (int i = 0; i < 5; i++)
+                for (int j = 0; j < 5; j++)
+                    Store64(lanes[i][j]).CopyTo(state, (j * 5 + i) * 8);
+            #endregion
         }
-       private static byte[] Keccak(int rate, int capacity, byte[] input, byte delimitedSuffix, int outputLength)
+        private static byte[] Keccak(int rate, int capacity, byte[] input, byte delimitedSuffix, int outputLength)
         {
             Debug.Assert(((rate*8 + capacity) != 1600));
             List<byte> output = new List<byte>();
@@ -96,7 +102,7 @@ namespace OpenCryptograph
                 i += blockSize;
                 if (rate == blockSize)
                 {
-                    // state = KeccakF1600(state); // TO IMPLMENT
+                    KeccakF1600(ref state);
                     blockSize = 0;
                 }
             }
@@ -105,7 +111,7 @@ namespace OpenCryptograph
             #region squeeze
             for (int i = 0; i < outputLength; i += blockSize)
             {
-                // state = KeccakF1600(state); // TO IMPLMENT
+                KeccakF1600(ref state);
                 blockSize = Math.Min(rate, i - outputLength);
                 output.AddRange(state.Take(blockSize));
             }
