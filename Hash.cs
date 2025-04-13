@@ -107,7 +107,13 @@ namespace OpenCryptograph
                 }
             }
             #endregion
-
+            #region padding
+            state[blockSize] ^= delimitedSuffix;
+            if (((delimitedSuffix & 0x80) != 0) && (blockSize == (rate - 1)))
+                KeccakF1600(ref state);
+            state[rate - 1] ^= 0x80;
+            KeccakF1600(ref state);
+            #endregion
             #region squeeze
             for (int i = 0; i < outputLength; i += blockSize)
             {
