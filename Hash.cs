@@ -41,6 +41,22 @@ namespace OpenCryptograph
                     for (int j = 0; j < 5; j++)
                         lanes[i][j] ^= D[i];
                 #endregion
+                #region ρ and π
+                int x = 1, y = 0;
+                ulong current = lanes[x][y];
+                for (int i = 0; i < 24; i++)
+                {
+                    {
+                        int temp = x;
+                        x = y;
+                        y = (2 * temp + 3 * y) % 5;
+                    }
+                    { 
+                        ulong temp = lanes[x][y];
+                        lanes[x][y] = RollLeft(current, ((i + 1) * (i + 2)) / 2);
+                        current = temp;
+                    }
+                }
             }
         }
        private static byte[] Keccak(int rate, int capacity, byte[] input, byte delimitedSuffix, int outputLength)
