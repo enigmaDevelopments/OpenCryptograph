@@ -30,6 +30,7 @@ namespace OpenCryptograph
             for (int i = 0; i < 5; i++)
                 for (int j = 0; j < 5; j++)
                     lanes[i][j] = Load64(state.Skip((j*5 + i) * 8).Take(8).ToArray());
+            byte R = 1;
             for (int round = 0; round < 24; round++)
             {
                 #region θ
@@ -59,7 +60,7 @@ namespace OpenCryptograph
                 }
                 #endregion
                 #region χ
-                for (int i = 0; i < 5; j++)
+                for (int i = 0; i < 5; i++)
                 {
                     ulong[] temp = new ulong[5];
                     for (int j = 0; j < 5; j++)
@@ -68,6 +69,15 @@ namespace OpenCryptograph
                         lanes[j][i] = temp[j] ^ ((~temp[(j + 1) % 5]) & temp[(j + 2) % 5]);
                 }
                 #endregion
+                #region ι
+                for (int i = 0; i < 7; i++)
+                {
+                    R = (byte)((R << 1) ^ ((R >> 7) * 0x71));
+                    if ((R & 2) == 2)
+                        lanes[0][0] ^= (ulong)1 << ((1 << i)-1);
+                }
+                #endregion
+
             }
         }
        private static byte[] Keccak(int rate, int capacity, byte[] input, byte delimitedSuffix, int outputLength)
