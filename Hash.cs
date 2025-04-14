@@ -3,6 +3,7 @@
 
     public static class Hash
     {
+        #region interfaces
         public static byte[] Shake128(byte[] input, int outputByteLen)
         {
             return Keccak(168, input, 0x1F, outputByteLen);
@@ -51,17 +52,58 @@
         {
             return SHA512(StringToBytes(input));
         }
-
-        private static string byteToHex(byte[] input)
+        public static string Shake128String(byte[] input, int outputByteLen)
+        {
+            return ByteToHex(Keccak(168, input, 0x1F, outputByteLen));
+        }
+        public static string Shake256String(byte[] input, int outputByteLen)
+        {
+            return ByteToHex(Keccak(136, input, 0x1F, outputByteLen));
+        }
+        public static string SHA224String(byte[] input)
+        {
+            return ByteToHex(Keccak(144, input, 0x06, 28));
+        }
+        public static string SHA256String(byte[] input)
+        {
+            return ByteToHex(Keccak(136, input, 0x06, 32));
+        }
+        public static string SHA384String(byte[] input)
+        {
+            return ByteToHex(Keccak(104, input, 0x06, 48));
+        }
+        public static string SHA512String(byte[] input)
+        {
+            return ByteToHex(Keccak(72, input, 0x06, 64));
+        }
+        public static string Shake128String(string input, int outputByteLen)
+        {
+            return ByteToHex(Shake128(input, outputByteLen));
+        }
+        public static string Shake256String(string input, int outputByteLen)
+        {
+            return ByteToHex(Shake256(input, outputByteLen));
+        }
+        public static string SHA224String(string input)
+        {
+            return ByteToHex(SHA224(input));
+        }
+        public static string SHA256String(string input)
+        {
+            return ByteToHex(SHA256(input));
+        }
+        public static string SHA384String(string input)
+        {
+            return ByteToHex(SHA384(input));
+        }
+        public static string SHA512String(string input)
+        {
+            return ByteToHex(SHA512(input));
+        }
+        #endregion
+        private static string ByteToHex(byte[] input)
         {
             return string.Join("", input.Select(b => b.ToString("x2")));
-        }
-        private static byte[] HexTobyte(string input)
-        {
-            byte[] output = new byte[input.Length / 2];
-            for (int i = 0; i < input.Length; i += 2)
-                output[i / 2] = Convert.ToByte(input.Substring(i, 2), 16);
-            return output;
         }
         private static byte[] StringToBytes(string input)
         {
