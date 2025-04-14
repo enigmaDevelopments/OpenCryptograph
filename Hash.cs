@@ -7,6 +7,67 @@
         {
             return Keccak(168, input, 0x1F, outputByteLen);
         }
+        public static byte[] Shake256(byte[] input, int outputByteLen)
+        {
+            return Keccak(136, input, 0x1F, outputByteLen);
+        }
+        public static byte[] SHA224(byte[] input)
+        {
+            return Keccak(144, input, 0x06, 28);
+        }
+        public static byte[] SHA256(byte[] input)
+        {
+            return Keccak(136, input, 0x06, 32);
+        }
+        public static byte[] SHA384(byte[] input)
+        {
+            return Keccak(104, input, 0x06, 48);
+        }
+        public static byte[] SHA512(byte[] input)
+        {
+            return Keccak(72, input, 0x06, 64);
+        }
+        public static byte[] Shake128(string input, int outputByteLen)
+        {
+            return Shake128(StringToBytes(input),outputByteLen);
+        }
+        public static byte[] Shake256(string input, int outputByteLen)
+        {
+            return Shake256(StringToBytes(input), outputByteLen);
+        }
+        public static byte[] SHA224(string input)
+        {
+            return SHA224(StringToBytes(input));
+        }
+        public static byte[] SHA256(string input)
+        {
+            return SHA256(StringToBytes(input));
+        }
+        public static byte[] SHA384(string input)
+        {
+            return SHA384(StringToBytes(input));
+        }
+        public static byte[] SHA512(string input)
+        {
+            return SHA512(StringToBytes(input));
+        }
+
+        private static string byteToHex(byte[] input)
+        {
+            return string.Join("", input.Select(b => b.ToString("x2")));
+        }
+        private static byte[] HexTobyte(string input)
+        {
+            byte[] output = new byte[input.Length / 2];
+            for (int i = 0; i < input.Length; i += 2)
+                output[i / 2] = Convert.ToByte(input.Substring(i, 2), 16);
+            return output;
+        }
+        private static byte[] StringToBytes(string input)
+        {
+            return System.Text.Encoding.UTF8.GetBytes(input);
+        }
+
         private static ulong RollLeft(ulong value, int shift)
         {
             shift %= 64;
