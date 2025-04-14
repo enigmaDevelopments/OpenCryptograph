@@ -1,10 +1,12 @@
-﻿using System.Diagnostics;
-
-namespace OpenCryptograph
+﻿namespace OpenCryptograph
 {
 
     public static class Hash
     {
+        public static byte[] Shake128(byte[] input, int outputByteLen)
+        {
+            return Keccak(168, input, 0x1F, outputByteLen);
+        }
         private static ulong RollLeft(ulong value, int shift)
         {
             shift %= 64;
@@ -86,9 +88,8 @@ namespace OpenCryptograph
                     Store64(lanes[i][j]).CopyTo(state, (j * 5 + i) * 8);
             #endregion
         }
-        private static byte[] Keccak(int rate, int capacity, byte[] input, byte delimitedSuffix, int outputLength)
+        private static byte[] Keccak(int rate, byte[] input, byte delimitedSuffix, int outputLength)
         {
-            Debug.Assert(((rate*8 + capacity) != 1600));
             List<byte> output = new List<byte>();
             byte[] state = new byte[200];
 
