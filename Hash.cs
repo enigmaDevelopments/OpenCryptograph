@@ -4,101 +4,101 @@
     public static class Hash
     {
         #region interfaces
-        public static byte[] Shake128(byte[] input, int outputByteLen)
+        public static byte[] Shake128Bytes(byte[] input, int outputByteLen)
         {
             return Keccak(168, input, 0x1F, outputByteLen);
         }
-        public static byte[] Shake256(byte[] input, int outputByteLen)
+        public static byte[] Shake256Bytes(byte[] input, int outputByteLen)
         {
             return Keccak(136, input, 0x1F, outputByteLen);
         }
-        public static byte[] SHA224(byte[] input)
+        public static byte[] SHA224Bytes(byte[] input)
         {
             return Keccak(144, input, 0x06, 28);
         }
-        public static byte[] SHA256(byte[] input)
+        public static byte[] SHA256Bytes(byte[] input)
         {
             return Keccak(136, input, 0x06, 32);
         }
-        public static byte[] SHA384(byte[] input)
+        public static byte[] SHA384Bytes(byte[] input)
         {
             return Keccak(104, input, 0x06, 48);
         }
-        public static byte[] SHA512(byte[] input)
+        public static byte[] SHA512Bytes(byte[] input)
         {
             return Keccak(72, input, 0x06, 64);
         }
-        public static byte[] Shake128(string input, int outputByteLen)
+        public static byte[] Shake128Bytes(string input, int outputByteLen)
         {
-            return Shake128(StringToBytes(input),outputByteLen);
+            return Shake128Bytes(StringToBytes(input), outputByteLen);
         }
-        public static byte[] Shake256(string input, int outputByteLen)
+        public static byte[] Shake256Bytes(string input, int outputByteLen)
         {
-            return Shake256(StringToBytes(input), outputByteLen);
+            return Shake256Bytes(StringToBytes(input), outputByteLen);
         }
-        public static byte[] SHA224(string input)
+        public static byte[] SHA224Bytes(string input)
         {
-            return SHA224(StringToBytes(input));
+            return SHA224Bytes(StringToBytes(input));
         }
-        public static byte[] SHA256(string input)
+        public static byte[] SHA256Bytes(string input)
         {
-            return SHA256(StringToBytes(input));
+            return SHA256Bytes(StringToBytes(input));
         }
-        public static byte[] SHA384(string input)
+        public static byte[] SHA384Bytes(string input)
         {
-            return SHA384(StringToBytes(input));
+            return SHA384Bytes(StringToBytes(input));
         }
-        public static byte[] SHA512(string input)
+        public static byte[] SHA512Bytes(string input)
         {
-            return SHA512(StringToBytes(input));
+            return SHA512Bytes(StringToBytes(input));
         }
-        public static string Shake128String(byte[] input, int outputByteLen)
+        public static string Shake128(byte[] input, int outputByteLen)
         {
-            return ByteToHex(Keccak(168, input, 0x1F, outputByteLen));
+            return ByteToHex(Shake128Bytes(input, outputByteLen));
         }
-        public static string Shake256String(byte[] input, int outputByteLen)
+        public static string Shake256(byte[] input, int outputByteLen)
         {
-            return ByteToHex(Keccak(136, input, 0x1F, outputByteLen));
+            return ByteToHex(Shake256Bytes(input, outputByteLen));
         }
-        public static string SHA224String(byte[] input)
+        public static string SHA224(byte[] input)
         {
-            return ByteToHex(Keccak(144, input, 0x06, 28));
+            return ByteToHex(SHA224Bytes(input));
         }
-        public static string SHA256String(byte[] input)
+        public static string SHA256(byte[] input)
         {
-            return ByteToHex(Keccak(136, input, 0x06, 32));
+            return ByteToHex(SHA256Bytes(input));
         }
-        public static string SHA384String(byte[] input)
+        public static string SHA384(byte[] input)
         {
-            return ByteToHex(Keccak(104, input, 0x06, 48));
+            return ByteToHex(SHA384Bytes(input));
         }
-        public static string SHA512String(byte[] input)
+        public static string SHA512(byte[] input)
         {
-            return ByteToHex(Keccak(72, input, 0x06, 64));
+            return ByteToHex(SHA512Bytes(input));
         }
-        public static string Shake128String(string input, int outputByteLen)
+        public static string Shake128(string input, int outputByteLen)
         {
-            return ByteToHex(Shake128(input, outputByteLen));
+            return ByteToHex(Shake128Bytes(input, outputByteLen));
         }
-        public static string Shake256String(string input, int outputByteLen)
+        public static string Shake256(string input, int outputByteLen)
         {
-            return ByteToHex(Shake256(input, outputByteLen));
+            return ByteToHex(Shake256Bytes(input, outputByteLen));
         }
-        public static string SHA224String(string input)
+        public static string SHA224(string input)
         {
-            return ByteToHex(SHA224(input));
+            return ByteToHex(SHA224Bytes(input));
         }
-        public static string SHA256String(string input)
+        public static string SHA256(string input)
         {
-            return ByteToHex(SHA256(input));
+            return ByteToHex(SHA256Bytes(input));
         }
-        public static string SHA384String(string input)
+        public static string SHA384(string input)
         {
-            return ByteToHex(SHA384(input));
+            return ByteToHex(SHA384Bytes(input));
         }
-        public static string SHA512String(string input)
+        public static string SHA512(string input)
         {
-            return ByteToHex(SHA512(input));
+            return ByteToHex(SHA512Bytes(input));
         }
         #endregion
         private static string ByteToHex(byte[] input)
