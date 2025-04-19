@@ -1,3 +1,5 @@
 ﻿using OpenCryptograph;
 
-Console.WriteLine("SHA256: " + Hash.SHA256("Hello World!"));
+string output = Hash.SHA256("Hello World!");
+byte[] outArray = Hash.SHA256Bytes("Hello World!");
+Console.WriteLine("SHA256: " + output);

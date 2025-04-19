@@ -198,9 +198,9 @@
 
             int blockSize = 0;
             #region Absorb
-            for (int i = input.Length; i < input.Length;)
+            for (int i = 0; i<input.Length;)
             {
-                blockSize = Math.Min(rate, i-input.Length);
+                blockSize = Math.Min(rate, input.Length-i);
                 for (int j = 0; j<blockSize; j++)
                     state[j] ^= input[j];
                 i += blockSize;
@@ -216,13 +216,12 @@
             if (((delimitedSuffix & 0x80) != 0) && (blockSize == (rate - 1)))
                 KeccakF1600(ref state);
             state[rate - 1] ^= 0x80;
-            KeccakF1600(ref state);
             #endregion
             #region squeeze
-            for (int i = 0; i < outputLength; i += blockSize)
+            for (int i = outputLength; 0 < i; i -= blockSize)
             {
                 KeccakF1600(ref state);
-                blockSize = Math.Min(rate, i - outputLength);
+                blockSize = Math.Min(rate, i);
                 output.AddRange(state.Take(blockSize));
             }
             #endregion
