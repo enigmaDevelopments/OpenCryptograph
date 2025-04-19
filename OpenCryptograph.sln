@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCryptograph", "OpenCryptograph.csproj", "{14EDC4AE-92C4-4FFA-817E-1E6912C79B7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "..\Debugger\Debugger.csproj", "{721112F3-0315-401E-ABB3-BBC345E4E0C3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{14EDC4AE-92C4-4FFA-817E-1E6912C79B7D} = {14EDC4AE-92C4-4FFA-817E-1E6912C79B7D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{14EDC4AE-92C4-4FFA-817E-1E6912C79B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14EDC4AE-92C4-4FFA-817E-1E6912C79B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14EDC4AE-92C4-4FFA-817E-1E6912C79B7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{721112F3-0315-401E-ABB3-BBC345E4E0C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{721112F3-0315-401E-ABB3-BBC345E4E0C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{721112F3-0315-401E-ABB3-BBC345E4E0C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{721112F3-0315-401E-ABB3-BBC345E4E0C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
