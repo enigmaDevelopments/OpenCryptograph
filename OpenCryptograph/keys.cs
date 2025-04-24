@@ -8,15 +8,8 @@ namespace OpenCryptograph
 {
     public class Key
     {
-        private ulong privateKey;
-        private ulong _publicKey;
-        public ulong publicKey
-        {
-            get
-            {
-                return _publicKey;
-            }
-        }
+        private readonly ulong privateKey;
+        public readonly ulong publicKey;
         public Key()
         {
             Random random = new Random(Environment.TickCount);
