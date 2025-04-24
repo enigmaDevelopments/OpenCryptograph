@@ -6,8 +6,23 @@ using System.Threading.Tasks;
 
 namespace OpenCryptograph
 {
-    internal class Key
+    public class Key
     {
-        public static Random random = new Random();
+        private ulong privateKey;
+        private ulong _publicKey;
+        public ulong publicKey
+        {
+            get
+            {
+                return _publicKey;
+            }
+        }
+        public Key()
+        {
+            Random random = new Random(Environment.TickCount);
+            privateKey = (ulong)random.NextInt64();
+            privateKey |= (ulong)(random.Next(Environment.TickCount)&1) << 63;
+
+        }
     }
 }
