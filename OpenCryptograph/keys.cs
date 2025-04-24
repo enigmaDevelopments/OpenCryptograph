@@ -20,8 +20,7 @@ namespace OpenCryptograph
         public Key()
         {
             Random random = new Random(Environment.TickCount);
-            privateKey = (ulong)random.NextInt64();
-            privateKey |= (ulong)(random.Next(Environment.TickCount)&1) << 63;
+            privateKey = (ulong)random.NextInt64(long.MinValue,long.MaxValue);
 
         }
     }
