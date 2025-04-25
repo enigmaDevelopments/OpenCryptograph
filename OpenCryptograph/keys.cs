@@ -9,12 +9,14 @@ namespace OpenCryptograph
 {
     public class Key
     {
-        private readonly BigInteger privateKey;
+        private readonly BigInteger privateKey1;
+        private readonly BigInteger privateKey2;
         public readonly BigInteger publicKey;
         public Key()
         {
-            privateKey = GetPrime();
-
+            privateKey1 = GetPrime();
+            privateKey2 = GetPrime();
+            publicKey = privateKey1 * privateKey2;
         }
 
         private BigInteger GetPrime()
