@@ -1,6 +1,6 @@
-﻿namespace OpenCryptograph
+﻿using System.Numerics;
+namespace OpenCryptograph
 {
-
     public static class Hash
     {
         #region interfaces
@@ -52,53 +52,102 @@
         {
             return SHA512Bytes(StringToBytes(input));
         }
-        public static string Shake128(byte[] input, int outputByteLen)
+        public static string Shake128String(byte[] input, int outputByteLen)
         {
             return ByteToHex(Shake128Bytes(input, outputByteLen));
         }
-        public static string Shake256(byte[] input, int outputByteLen)
+        public static string Shake256String(byte[] input, int outputByteLen)
         {
             return ByteToHex(Shake256Bytes(input, outputByteLen));
         }
-        public static string SHA224(byte[] input)
+        public static string SHA224String(byte[] input)
         {
             return ByteToHex(SHA224Bytes(input));
         }
-        public static string SHA256(byte[] input)
+        public static string SHA256String(byte[] input)
         {
             return ByteToHex(SHA256Bytes(input));
         }
-        public static string SHA384(byte[] input)
+        public static string SHA384String(byte[] input)
         {
             return ByteToHex(SHA384Bytes(input));
         }
-        public static string SHA512(byte[] input)
+        public static string SHA512String(byte[] input)
         {
             return ByteToHex(SHA512Bytes(input));
         }
-        public static string Shake128(string input, int outputByteLen)
+        public static string Shake128String(string input, int outputByteLen)
         {
             return ByteToHex(Shake128Bytes(input, outputByteLen));
         }
-        public static string Shake256(string input, int outputByteLen)
+        public static string Shake256String(string input, int outputByteLen)
         {
             return ByteToHex(Shake256Bytes(input, outputByteLen));
         }
-        public static string SHA224(string input)
+        public static string SHA224String(string input)
         {
             return ByteToHex(SHA224Bytes(input));
         }
-        public static string SHA256(string input)
+        public static string SHA256String(string input)
         {
             return ByteToHex(SHA256Bytes(input));
         }
-        public static string SHA384(string input)
+        public static string SHA384String(string input)
         {
             return ByteToHex(SHA384Bytes(input));
         }
-        public static string SHA512(string input)
+        public static string SHA512String(string input)
         {
             return ByteToHex(SHA512Bytes(input));
+        }
+
+        public static BigInteger Shake128(byte[] input, int outputByteLen)
+        {
+            return new BigInteger(Shake128Bytes(input, outputByteLen));
+        }
+        public static BigInteger Shake256(byte[] input, int outputByteLen)
+        {
+            return new BigInteger(Shake256Bytes(input, outputByteLen));
+        }
+        public static BigInteger SHA224(byte[] input)
+        {
+            return new BigInteger(SHA224Bytes(input));
+        }
+        public static BigInteger SHA256(byte[] input)
+        {
+            return new BigInteger(SHA256Bytes(input));
+        }
+        public static BigInteger SHA384(byte[] input)
+        {
+            return new BigInteger(SHA384Bytes(input));
+        }
+        public static BigInteger SHA512(byte[] input)
+        {
+            return new BigInteger(SHA512Bytes(input));
+        }
+        public static BigInteger Shake128(string input, int outputByteLen)
+        {
+            return new BigInteger(Shake128Bytes(input, outputByteLen));
+        }
+        public static BigInteger Shake256(string input, int outputByteLen)
+        {
+            return new BigInteger(Shake256Bytes(input, outputByteLen));
+        }
+        public static BigInteger SHA224(string input)
+        {
+            return new BigInteger(SHA224Bytes(input));
+        }
+        public static BigInteger SHA256(string input)
+        {
+            return new BigInteger(SHA256Bytes(input));
+        }
+        public static BigInteger SHA384(string input)
+        {
+            return new BigInteger(SHA384Bytes(input));
+        }
+        public static BigInteger SHA512(string input)
+        {
+            return new BigInteger(SHA512Bytes(input));
         }
         #endregion
         private static string ByteToHex(byte[] input)
