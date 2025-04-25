@@ -52,6 +52,31 @@ namespace OpenCryptograph
         {
             return SHA512Bytes(StringToBytes(input));
         }
+        public static byte[] Shake128Bytes(BigInteger input, int outputByteLen)
+        {
+            return Shake128Bytes(input.ToByteArray(), outputByteLen);
+        }
+        public static byte[] Shake256Bytes(BigInteger input, int outputByteLen)
+        {
+            return Shake256Bytes(input.ToByteArray(), outputByteLen);
+        }
+        public static byte[] SHA224Bytes(BigInteger input)
+        {
+            return SHA224Bytes(input.ToByteArray());
+        }
+        public static byte[] SHA256Bytes(BigInteger input)
+        {
+            return SHA256Bytes(input.ToByteArray());
+        }
+        public static byte[] SHA384Bytes(BigInteger input)
+        {
+            return SHA384Bytes(input.ToByteArray());
+        }
+        public static byte[] SHA512Bytes(BigInteger input)
+        {
+            return SHA512Bytes(input.ToByteArray());
+        }
+
         public static string Shake128String(byte[] input, int outputByteLen)
         {
             return ByteToHex(Shake128Bytes(input, outputByteLen));
@@ -97,6 +122,30 @@ namespace OpenCryptograph
             return ByteToHex(SHA384Bytes(input));
         }
         public static string SHA512String(string input)
+        {
+            return ByteToHex(SHA512Bytes(input));
+        }
+        public static string Shake128String(BigInteger input, int outputByteLen)
+        {
+            return ByteToHex(Shake128Bytes(input, outputByteLen));
+        }
+        public static string Shake256String(BigInteger input, int outputByteLen)
+        {
+            return ByteToHex(Shake256Bytes(input, outputByteLen));
+        }
+        public static string SHA224String(BigInteger input)
+        {
+            return ByteToHex(SHA224Bytes(input));
+        }
+        public static string SHA256String(BigInteger input)
+        {
+            return ByteToHex(SHA256Bytes(input));
+        }
+        public static string SHA384String(BigInteger input)
+        {
+            return ByteToHex(SHA384Bytes(input));
+        }
+        public static string SHA512String(BigInteger input)
         {
             return ByteToHex(SHA512Bytes(input));
         }
@@ -146,6 +195,30 @@ namespace OpenCryptograph
             return new BigInteger(SHA384Bytes(input));
         }
         public static BigInteger SHA512(string input)
+        {
+            return new BigInteger(SHA512Bytes(input));
+        }
+        public static BigInteger Shake128(BigInteger input, int outputByteLen)
+        {
+            return new BigInteger(Shake128Bytes(input, outputByteLen));
+        }
+        public static BigInteger Shake256(BigInteger input, int outputByteLen)
+        {
+            return new BigInteger(Shake256Bytes(input, outputByteLen));
+        }
+        public static BigInteger SHA224(BigInteger input)
+        {
+            return new BigInteger(SHA224Bytes(input));
+        }
+        public static BigInteger SHA256(BigInteger input)
+        {
+            return new BigInteger(SHA256Bytes(input));
+        }
+        public static BigInteger SHA384(BigInteger input)
+        {
+            return new BigInteger(SHA384Bytes(input));
+        }
+        public static BigInteger SHA512(BigInteger input)
         {
             return new BigInteger(SHA512Bytes(input));
         }
