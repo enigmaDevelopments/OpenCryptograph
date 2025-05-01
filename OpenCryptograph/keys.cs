@@ -9,9 +9,14 @@ namespace OpenCryptograph
 {
     public class Key
     {
+        //p
         private readonly BigInteger privateKey1;
+        //q
         private readonly BigInteger privateKey2;
+        //n
         public readonly BigInteger publicKey;
+        //e
+        public readonly BigInteger publicKey2;
         public Key()
         {
             privateKey1 = GetPrime();
@@ -34,3 +39,4 @@ namespace OpenCryptograph
         }
     }
 }
+// Source is the class in currently taking - CSC-404 Foundations of Computation
