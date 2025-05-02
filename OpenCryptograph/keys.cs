@@ -30,11 +30,16 @@ namespace OpenCryptograph
         {
             byte[] bytes = new byte[256];
             BigInteger output;
-            random.NextBytes(bytes);
-            bytes[255] |= 0x40;
-            bytes[255] &= 0x7F;
-            bytes[0] |= 0x03;
-            output = new BigInteger(bytes);
+            do
+            {
+                Random random = new Random();
+                random.NextBytes(bytes);
+                bytes[0] |= 0x07;
+                output = new BigInteger(bytes);
+                output = BigInteger.Abs(output);
+                output = BigInteger.RotateRight(output, 1);
+            }while (MillerRabinPrime(output,100));
+
             return output;
 
         }
@@ -47,9 +52,9 @@ namespace OpenCryptograph
                 random.NextBytes(bytes);
                 BigInteger num = BigInteger.ModPow(BigInteger.Abs(new BigInteger(bytes)) + 2, exp, input);
                 if (num == 1 || num == input-1)
-                    return false;
+                    return true;
             }
-            return true;
+            return false;
         }
     }
 }

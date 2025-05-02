@@ -1,4 +1,5 @@
 ﻿using OpenCryptograph;
+using System;
 using System.Numerics;
 
 string output = Hash.SHA256("Hello World!");
