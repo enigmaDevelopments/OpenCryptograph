@@ -16,7 +16,7 @@ namespace OpenCryptograph
         //n
         public readonly BigInteger publicKey;
         //e
-        public readonly BigInteger publicKey2;
+        public const int publicKey2 = 65537;
         private readonly Random random;
         public Key()
         {
@@ -39,9 +39,7 @@ namespace OpenCryptograph
                 output = BigInteger.Abs(output);
                 output = BigInteger.RotateRight(output, 1);
             }while (MillerRabinPrime(output,100));
-
             return output;
-
         }
         public bool MillerRabinPrime(BigInteger input, int certanty)
         {
