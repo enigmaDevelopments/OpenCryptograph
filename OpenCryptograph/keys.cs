@@ -17,8 +17,10 @@ namespace OpenCryptograph
         public readonly BigInteger publicKey;
         //e
         public readonly BigInteger publicKey2;
+        private readonly Random random;
         public Key()
         {
+            random = new Random();
             privateKey1 = GetPrime();
             privateKey2 = GetPrime();
             publicKey = privateKey1 * privateKey2;
@@ -27,30 +29,31 @@ namespace OpenCryptograph
         private BigInteger GetPrime()
         {
             byte[] bytes = new byte[256];
-            Random random = new Random(Environment.TickCount);
             BigInteger output;
             random.NextBytes(bytes);
-            bytes[31] |= 0x40;
-            bytes[31] &= 0x7F;
-            bytes[0] |= 0x01;
+            bytes[255] |= 0x40;
+            bytes[255] &= 0x7F;
+            bytes[0] |= 0x03;
             output = new BigInteger(bytes);
             return output;
 
         }
-
-        public BigInteger FastModularExponentiation(BigInteger bas, BigInteger exponent, BigInteger modulo)
+        public bool MillerRabinPrime(BigInteger input, int certanty)
         {
-            BigInteger output = 1;
-            BigInteger power = bas % modulo;
-            while (exponent > 0)
+            BigInteger exp = input >> 1;
+            for (int i = 0; i < certanty; i++)
             {
-                if ((exponent & 1) == 1)
-                    output = (output * power) % modulo;
-                exponent >>= 1;
-                power = (power * power) % modulo;
+                byte[] bytes = new byte[255];
+                random.NextBytes(bytes);
+                BigInteger num = BigInteger.ModPow(BigInteger.Abs(new BigInteger(bytes)) + 2, exp, input);
+                if (num == 1 || num == input-1)
+                    return false;
             }
-            return output;
+            return true;
         }
     }
 }
 // Source is the class in currently taking - CSC-404 Foundations of Computation
+// Miller-Rabin sources:
+// https://www.youtube.com/watch?v=zmhUlVck3J0
+// https://www.youtube.com/watch?v=-BWTS_1Nxao
