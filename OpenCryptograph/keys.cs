@@ -37,6 +37,20 @@ namespace OpenCryptograph
             return output;
 
         }
+
+        public BigInteger FastModularExponentiation(BigInteger bas, BigInteger exponent, BigInteger modulo)
+        {
+            BigInteger output = 1;
+            BigInteger power = bas % modulo;
+            while (exponent > 0)
+            {
+                if ((exponent & 1) == 1)
+                    output = (output * power) % modulo;
+                exponent >>= 1;
+                power = (power * power) % modulo;
+            }
+            return output;
+        }
     }
 }
 // Source is the class in currently taking - CSC-404 Foundations of Computation
