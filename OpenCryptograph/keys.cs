@@ -4,33 +4,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OpenCryptograph
 {
     public class Key
     {
         //d
-        private readonly BigInteger privateKey;
+        public readonly BigInteger privateKey;
         //n
         public readonly BigInteger publicKey;
         //e
-        public const int constantKey = 65537;
+        public const int constantKey = 3;
         private readonly Random random;
         public Key()
         {
-            random = new Random();
-            BigInteger p = GetPrime();
-            BigInteger q = GetPrime();
+            //random = new Random();
+            //BigInteger p = GetPrime();
+            //BigInteger q = GetPrime();
+            BigInteger p = 11;
+            BigInteger q = 17;
             publicKey = p * q;
-            privateKey = ExtendedGCF((p - 1) * (q - 1), constantKey);
+
+
+            privateKey = ExtendedGCF(constantKey,(p - 1) * (q - 1));
         }
         public static BigInteger Encrypt(string input, BigInteger publicKey)
         {
             byte[] bytes = Encoding.GetEncoding("UTF-8").GetBytes(input);
             List<byte> output = new List<byte>();
-            for (int i = 0; i < bytes.Length; i += 255)
+            int blockSize = publicKey.GetByteCount()-1;
+            input = input.PadLeft(bytes.Length + (blockSize - bytes.Length % blockSize) % blockSize, '\0');
+            bytes = Encoding.GetEncoding("UTF-8").GetBytes(input);
+            Console.WriteLine("Bytes: " + Encoding.ASCII.GetString(bytes));
+            for (int i = 0; i < bytes.Length; i += blockSize)
             {
-                BigInteger m = new BigInteger(bytes.Skip(i).Take(255).ToArray());
+                BigInteger m = new BigInteger(bytes.Skip(i).Take(blockSize).ToArray());
+                Console.WriteLine("Block: " + Encoding.ASCII.GetString(bytes.Skip(i).Take(blockSize).ToArray()));
+                Console.WriteLine(string.Join("", bytes.Skip(i).Take(blockSize).ToArray().Select(b => b.ToString("x2"))));
                 m = BigInteger.ModPow(m, constantKey, publicKey);
                 output.AddRange(m.ToByteArray());
             }
@@ -39,13 +50,16 @@ namespace OpenCryptograph
         public string Decrypt(BigInteger input)
         {
             List<byte> output = new List<byte>();
-            while (0 < input)
+            int blockSize = publicKey.GetByteCount()-1;
+            byte[] bytes = input.ToByteArray();
+            for (int i = 0; i < bytes.Length; i += blockSize)
             {
-                BigInteger m = input % 2040;
-                input /= 2040;
-                output.AddRange(BigInteger.ModPow(input, privateKey, publicKey).ToByteArray());
+                Console.WriteLine(i);
+                BigInteger m = new BigInteger(bytes.Skip(i).Take(blockSize).ToArray());
+                m = BigInteger.ModPow(m, privateKey, publicKey);
+                output.AddRange(m.ToByteArray());
             }
-            return Encoding.GetEncoding("UTF-8").GetString(output.ToArray());
+            return Encoding.ASCII.GetString(output.ToArray());
         }
 
         private BigInteger GetPrime()
