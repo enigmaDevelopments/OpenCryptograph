@@ -24,6 +24,18 @@ namespace OpenCryptograph
             publicKey = p*q;
             privateKey = ExtendedGCF((p - 1) * (q - 1), constantKey);
         }
+        public static BigInteger Encrypt(string input, BigInteger publicKey)
+        {
+            byte[] bytes = Encoding.GetEncoding("UTF-8").GetBytes(input);
+            List<byte> output = new List<byte>();
+            for (int i = 0; i < bytes.Length; i+= 255)
+            {
+                BigInteger m = new BigInteger(bytes.Skip(i).Take(255).ToArray());
+                m = BigInteger.ModPow(m, constantKey, publicKey);
+                output.AddRange(m.ToByteArray());
+            }
+            return new BigInteger(output.ToArray());
+        }
 
         private BigInteger GetPrime()
         {
