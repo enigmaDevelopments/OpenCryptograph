@@ -15,14 +15,14 @@ namespace OpenCryptograph
         //n
         public readonly BigInteger publicKey;
         //e
-        public const int constantKey = 3;
+        public const int constantKey = 11;
         private readonly Random random;
         public Key()
         {
             //random = new Random();
             //BigInteger p = GetPrime();
             //BigInteger q = GetPrime();
-            BigInteger p = 11;
+            BigInteger p = 29;
             BigInteger q = 17;
             publicKey = p * q;
 
@@ -31,34 +31,37 @@ namespace OpenCryptograph
         }
         public static BigInteger Encrypt(string input, BigInteger publicKey)
         {
-            byte[] bytes = Encoding.GetEncoding("UTF-8").GetBytes(input);
             List<byte> output = new List<byte>();
-            int blockSize = publicKey.GetByteCount()-1;
-            input = input.PadLeft(bytes.Length + (blockSize - bytes.Length % blockSize) % blockSize, '\0');
-            bytes = Encoding.GetEncoding("UTF-8").GetBytes(input);
+            int blockSize = (int)((publicKey.GetBitLength() - 1) / 8);
+            byte[] bytes  = Encoding.GetEncoding("UTF-8").GetBytes(input);
+            bytes = new byte[(blockSize - bytes.Length % blockSize) % blockSize].Concat(bytes).ToArray();
             Console.WriteLine("Bytes: " + Encoding.ASCII.GetString(bytes));
             for (int i = 0; i < bytes.Length; i += blockSize)
             {
-                BigInteger m = new BigInteger(bytes.Skip(i).Take(blockSize).ToArray());
+                BigInteger m = new BigInteger(bytes.Skip(i).Take(blockSize).ToArray(), isUnsigned: true, isBigEndian: true);
                 Console.WriteLine("Block: " + Encoding.ASCII.GetString(bytes.Skip(i).Take(blockSize).ToArray()));
                 Console.WriteLine(string.Join("", bytes.Skip(i).Take(blockSize).ToArray().Select(b => b.ToString("x2"))));
                 m = BigInteger.ModPow(m, constantKey, publicKey);
-                output.AddRange(m.ToByteArray());
+                output.AddRange(m.ToByteArray(isUnsigned: true, isBigEndian: true));
             }
             return new BigInteger(output.ToArray());
         }
         public string Decrypt(BigInteger input)
         {
             List<byte> output = new List<byte>();
-            int blockSize = publicKey.GetByteCount()-1;
+            int blockSize = (int)((publicKey.GetBitLength() - 1) / 8);
             byte[] bytes = input.ToByteArray();
             for (int i = 0; i < bytes.Length; i += blockSize)
             {
                 Console.WriteLine(i);
-                BigInteger m = new BigInteger(bytes.Skip(i).Take(blockSize).ToArray());
+                BigInteger m = new BigInteger(bytes.Skip(i).Take(blockSize).ToArray(), isUnsigned: true, isBigEndian: true);
                 m = BigInteger.ModPow(m, privateKey, publicKey);
                 output.AddRange(m.ToByteArray());
             }
+            Console.WriteLine(output[output.Count - 1]);
+            Console.WriteLine(output[0]);
+            while (output[output.Count - 1] == 0)
+                output.RemoveAt(output.Count - 1);
             return Encoding.ASCII.GetString(output.ToArray());
         }
 
@@ -94,7 +97,7 @@ namespace OpenCryptograph
         public BigInteger ExtendedGCF(BigInteger a, BigInteger b)
         {
             var (output, _) = ExtendedEuclidean(a, b);
-            return output + b;
+            return (output + b)%b;
         }
 
         private (BigInteger, BigInteger) ExtendedEuclidean(BigInteger a, BigInteger b)
