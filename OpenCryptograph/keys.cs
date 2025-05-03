@@ -15,15 +15,18 @@ namespace OpenCryptograph
         //n
         public readonly BigInteger publicKey;
         //e
-        public const int constantKey = 11;
+        //public const int constantKey = 11;
+        public const int constantKey = 65537;
         private readonly Random random;
         public Key()
         {
-            //random = new Random();
-            //BigInteger p = GetPrime();
-            //BigInteger q = GetPrime();
-            BigInteger p = 911;
-            BigInteger q = 997;
+            random = new Random();
+            BigInteger p = GetPrime();
+            BigInteger q = GetPrime();
+            Console.WriteLine("P: " + p);
+            Console.WriteLine("Q: " + q);
+            //BigInteger p = 911;
+            //BigInteger q = 997;
             publicKey = p * q;
 
 
@@ -60,11 +63,10 @@ namespace OpenCryptograph
             {
                 BigInteger m = input % blockSize;
                 input /= blockSize;
-                Console.WriteLine("Block: " + m.ToString("x2"));
                 m = BigInteger.ModPow(m, privateKey, publicKey);
                 Console.WriteLine("Decrypted: " + m.ToString("x2"));
                 output *= blockSize;
-                output += m;
+                output += m%blockSize;
             }
             return Encoding.ASCII.GetString(output.ToByteArray());
         }
@@ -75,13 +77,16 @@ namespace OpenCryptograph
             BigInteger output;
             do
             {
-                Random random = new Random();
                 random.NextBytes(bytes);
-                bytes[0] |= 0x07;
+                bytes[255] |= 0x80;
                 output = new BigInteger(bytes);
                 output = BigInteger.Abs(output);
-                output = BigInteger.RotateRight(output, 1);
-            } while (MillerRabinPrime(output, 100) || output - 1 % constantKey == 0);
+                output |= 0x03;
+                Console.WriteLine(output);
+                if ((output - 1) % constantKey == 0) 
+                    continue;
+            } while (!MillerRabinPrime(output, 100));
+            Console.WriteLine("------------");
             return output;
         }
 
@@ -92,7 +97,8 @@ namespace OpenCryptograph
             {
                 byte[] bytes = new byte[255];
                 random.NextBytes(bytes);
-                BigInteger num = BigInteger.ModPow(BigInteger.Abs(new BigInteger(bytes)) + 2, exp, input);
+                BigInteger rand = BigInteger.Abs(new BigInteger(bytes)) + 2;
+                BigInteger num = BigInteger.ModPow(rand, exp, input);
                 if (num == 1 || num == input - 1)
                     return true;
             }
