@@ -32,39 +32,41 @@ namespace OpenCryptograph
         public static BigInteger Encrypt(string input, BigInteger publicKey)
         {
             BigInteger output = 0;
-            BigInteger blockSize = BigInteger.Pow(256,publicKey.GetByteCount());
+            BigInteger blockSize = BigInteger.Pow(256,publicKey.GetByteCount()-1);
             BigInteger parsedInput = new BigInteger(Encoding.UTF8.GetBytes(input));
-            for (BigInteger i = 255; 0 < parsedInput; i*=blockSize, parsedInput /= blockSize)
+            Console.WriteLine("Parsed: " + parsedInput.ToString("x2"));
+            while (0 < parsedInput)
             {
 
                 BigInteger m = parsedInput % blockSize;
+                parsedInput /= blockSize;
                 Console.WriteLine("Block: " + Encoding.ASCII.GetString(m.ToByteArray()));
-                Console.WriteLine("Num: " + m);
+                Console.WriteLine("Num: " + m.ToString("x2"));
                 m = BigInteger.ModPow(m, constantKey, publicKey);
                 Console.WriteLine("Encrypted: " + m.ToString("x2"));
                 Console.WriteLine("Length: " + m.ToByteArray().Length);
-                output *= blockSize;
+                output *= BigInteger.Pow(256, publicKey.GetByteCount());
                 output += m;
             }
+            Console.WriteLine("Encrypted: " + output.ToString("x2"));
             return output;
         }
         public string Decrypt(BigInteger input)
         {
-            List<byte> output = new List<byte>();
-            int blockSize = (int)((publicKey.GetBitLength() - 1) / 8);
-            byte[] bytes = input.ToByteArray();
-            for (int i = 0; i < bytes.Length; i += blockSize)
+            BigInteger output = 0;
+            BigInteger blockSize = BigInteger.Pow(256, publicKey.GetByteCount());
+
+            while (0 < input)
             {
-                Console.WriteLine(i);
-                BigInteger m = new BigInteger(bytes.Skip(i).Take(blockSize).ToArray(), isUnsigned: true, isBigEndian: true);
+                BigInteger m = input % blockSize;
+                input /= blockSize;
+                Console.WriteLine("Block: " + m.ToString("x2"));
                 m = BigInteger.ModPow(m, privateKey, publicKey);
-                output.AddRange(m.ToByteArray());
+                Console.WriteLine("Decrypted: " + m.ToString("x2"));
+                output *= blockSize;
+                output += m;
             }
-            Console.WriteLine(output[output.Count - 1]);
-            Console.WriteLine(output[0]);
-            while (output[output.Count - 1] == 0)
-                output.RemoveAt(output.Count - 1);
-            return Encoding.ASCII.GetString(output.ToArray());
+            return Encoding.ASCII.GetString(output.ToByteArray());
         }
 
         private BigInteger GetPrime()

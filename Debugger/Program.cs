@@ -8,6 +8,6 @@ Console.WriteLine("SHA256: " + output);
 Key key = new Key();
 Console.WriteLine("Public Key: " + key.publicKey);
 Console.WriteLine("Private Key: " + key.privateKey);
-BigInteger encrypted = Key.Encrypt("Hello World!1", key.publicKey);
+BigInteger encrypted = Key.Encrypt("1234567", key.publicKey);
 Console.WriteLine("Encrypted: " + encrypted);
 Console.WriteLine("Decrypted: " + key.Decrypt(encrypted));
