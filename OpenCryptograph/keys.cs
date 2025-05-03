@@ -22,8 +22,8 @@ namespace OpenCryptograph
             //random = new Random();
             //BigInteger p = GetPrime();
             //BigInteger q = GetPrime();
-            BigInteger p = 29;
-            BigInteger q = 17;
+            BigInteger p = 911;
+            BigInteger q = 997;
             publicKey = p * q;
 
 
@@ -31,20 +31,22 @@ namespace OpenCryptograph
         }
         public static BigInteger Encrypt(string input, BigInteger publicKey)
         {
-            List<byte> output = new List<byte>();
-            int blockSize = (int)((publicKey.GetBitLength() - 1) / 8);
-            byte[] bytes  = Encoding.GetEncoding("UTF-8").GetBytes(input);
-            bytes = new byte[(blockSize - bytes.Length % blockSize) % blockSize].Concat(bytes).ToArray();
-            Console.WriteLine("Bytes: " + Encoding.ASCII.GetString(bytes));
-            for (int i = 0; i < bytes.Length; i += blockSize)
+            BigInteger output = 0;
+            BigInteger blockSize = BigInteger.Pow(256,publicKey.GetByteCount());
+            BigInteger parsedInput = new BigInteger(Encoding.UTF8.GetBytes(input));
+            for (BigInteger i = 255; 0 < parsedInput; i*=blockSize, parsedInput /= blockSize)
             {
-                BigInteger m = new BigInteger(bytes.Skip(i).Take(blockSize).ToArray(), isUnsigned: true, isBigEndian: true);
-                Console.WriteLine("Block: " + Encoding.ASCII.GetString(bytes.Skip(i).Take(blockSize).ToArray()));
-                Console.WriteLine(string.Join("", bytes.Skip(i).Take(blockSize).ToArray().Select(b => b.ToString("x2"))));
+
+                BigInteger m = parsedInput % blockSize;
+                Console.WriteLine("Block: " + Encoding.ASCII.GetString(m.ToByteArray()));
+                Console.WriteLine("Num: " + m);
                 m = BigInteger.ModPow(m, constantKey, publicKey);
-                output.AddRange(m.ToByteArray(isUnsigned: true, isBigEndian: true));
+                Console.WriteLine("Encrypted: " + m.ToString("x2"));
+                Console.WriteLine("Length: " + m.ToByteArray().Length);
+                output *= blockSize;
+                output += m;
             }
-            return new BigInteger(output.ToArray());
+            return output;
         }
         public string Decrypt(BigInteger input)
         {
