@@ -37,7 +37,7 @@ namespace OpenCryptograph
                 output = new BigInteger(bytes);
                 output = BigInteger.Abs(output);
                 output = BigInteger.RotateRight(output, 1);
-            }while (MillerRabinPrime(output,100));
+            }while (MillerRabinPrime(output,100) || output - 1 % constantKey == 0);
             return output;
         }
 
