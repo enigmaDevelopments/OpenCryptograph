@@ -21,20 +21,31 @@ namespace OpenCryptograph
             random = new Random();
             BigInteger p = GetPrime();
             BigInteger q = GetPrime();
-            publicKey = p*q;
+            publicKey = p * q;
             privateKey = ExtendedGCF((p - 1) * (q - 1), constantKey);
         }
         public static BigInteger Encrypt(string input, BigInteger publicKey)
         {
             byte[] bytes = Encoding.GetEncoding("UTF-8").GetBytes(input);
             List<byte> output = new List<byte>();
-            for (int i = 0; i < bytes.Length; i+= 255)
+            for (int i = 0; i < bytes.Length; i += 255)
             {
                 BigInteger m = new BigInteger(bytes.Skip(i).Take(255).ToArray());
                 m = BigInteger.ModPow(m, constantKey, publicKey);
                 output.AddRange(m.ToByteArray());
             }
             return new BigInteger(output.ToArray());
+        }
+        public string Decrypt(BigInteger input)
+        {
+            List<byte> output = new List<byte>();
+            while (0 < input)
+            {
+                BigInteger m = input % 2040;
+                input /= 2040;
+                output.AddRange(BigInteger.ModPow(input, privateKey, publicKey).ToByteArray());
+            }
+            return Encoding.GetEncoding("UTF-8").GetString(output.ToArray());
         }
 
         private BigInteger GetPrime()
@@ -49,7 +60,7 @@ namespace OpenCryptograph
                 output = new BigInteger(bytes);
                 output = BigInteger.Abs(output);
                 output = BigInteger.RotateRight(output, 1);
-            }while (MillerRabinPrime(output,100) || output - 1 % constantKey == 0);
+            } while (MillerRabinPrime(output, 100) || output - 1 % constantKey == 0);
             return output;
         }
 
@@ -61,14 +72,14 @@ namespace OpenCryptograph
                 byte[] bytes = new byte[255];
                 random.NextBytes(bytes);
                 BigInteger num = BigInteger.ModPow(BigInteger.Abs(new BigInteger(bytes)) + 2, exp, input);
-                if (num == 1 || num == input-1)
+                if (num == 1 || num == input - 1)
                     return true;
             }
             return false;
         }
         public BigInteger ExtendedGCF(BigInteger a, BigInteger b)
         {
-            var (output,_) = ExtendedEuclidean(a, b);
+            var (output, _) = ExtendedEuclidean(a, b);
             return output + b;
         }
 

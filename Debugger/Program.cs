@@ -7,4 +7,4 @@ byte[] outArray = Hash.SHA256Bytes("Hello World!");
 Console.WriteLine("SHA256: " + output);
 Key key = new Key();
 Console.WriteLine("Key: " + key.publicKey);
-Console.WriteLine(Key.Encrypt("Hello World!", key.publicKey));
+Console.WriteLine(key.Decrypt(Key.Encrypt("Hello World!",key.publicKey)));
