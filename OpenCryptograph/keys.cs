@@ -9,21 +9,20 @@ namespace OpenCryptograph
 {
     public class Key
     {
-        //p
-        private readonly BigInteger privateKey1;
-        //q
-        private readonly BigInteger privateKey2;
+        //d
+        private readonly BigInteger privateKey;
         //n
         public readonly BigInteger publicKey;
         //e
-        public const int publicKey2 = 65537;
+        public const int constantKey = 65537;
         private readonly Random random;
         public Key()
         {
             random = new Random();
-            privateKey1 = GetPrime();
-            privateKey2 = GetPrime();
-            publicKey = privateKey1 * privateKey2;
+            BigInteger p = GetPrime();
+            BigInteger q = GetPrime();
+            publicKey = p*q;
+            privateKey = ExtendedGCF((p - 1) * (q - 1), constantKey);
         }
 
         private BigInteger GetPrime()
@@ -41,7 +40,8 @@ namespace OpenCryptograph
             }while (MillerRabinPrime(output,100));
             return output;
         }
-        public bool MillerRabinPrime(BigInteger input, int certanty)
+
+        private bool MillerRabinPrime(BigInteger input, int certanty)
         {
             BigInteger exp = input >> 1;
             for (int i = 0; i < certanty; i++)
@@ -53,6 +53,21 @@ namespace OpenCryptograph
                     return true;
             }
             return false;
+        }
+        public BigInteger ExtendedGCF(BigInteger a, BigInteger b)
+        {
+            var (output,_) = ExtendedEuclidean(a, b);
+            return output + b;
+        }
+
+        private (BigInteger, BigInteger) ExtendedEuclidean(BigInteger a, BigInteger b)
+        {
+            if (b == 0)
+                return (1, 0);
+            var (x1, y1) = ExtendedEuclidean(b, a % b);
+            BigInteger x = y1;
+            BigInteger y = x1 - y1 * (a / b);
+            return (x, y);
         }
     }
 }
