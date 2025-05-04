@@ -24,7 +24,20 @@ namespace OpenCryptograph
             BigInteger q = GetPrime();
             publicKey = p * q;
             privateKey = ExtendedGCF(constantKey, (p - 1) * (q - 1));
+            seed = BigInteger.Zero;
         }
+        public Key(BigInteger publicKey, BigInteger privateKey)
+        {
+            this.publicKey = publicKey;
+            this.privateKey = privateKey;
+        }
+        public Key(BigInteger publicKey, BigInteger privateKey, int primeBytes) : this(publicKey, privateKey)
+        {
+            this.primeBytes = primeBytes;
+        }
+        public Key(string publicKey, string privateKey) : this(BigInteger.Parse(publicKey), BigInteger.Parse(privateKey)) { }
+        public Key(string publicKey, string privateKey, int primeBytes) : this(BigInteger.Parse(publicKey), BigInteger.Parse(privateKey), primeBytes) { }
+
         public BigInteger Encrypt(string input)
         {
             return Encrypt(input, publicKey);
