@@ -17,15 +17,14 @@ namespace OpenCryptograph
         //e
         public const int constantKey = 65537;
         private readonly Random random;
-        public Key()
+        public Key():this(Environment.TickCount){ }
+        Key(BigInteger seed)
         {
-            random = new Random();
+            random = new Random(seed);
             BigInteger p = GetPrime();
             BigInteger q = GetPrime();
             publicKey = p * q;
-
-
-            privateKey = ExtendedGCF(constantKey,(p - 1) * (q - 1));
+            privateKey = ExtendedGCF(constantKey, (p - 1) * (q - 1));
         }
         public BigInteger Encrypt(string input)
         {
