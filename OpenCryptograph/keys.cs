@@ -85,7 +85,7 @@ namespace OpenCryptograph
                 Console.WriteLine(output);
                 if ((output - 1) % constantKey == 0) 
                     continue;
-            } while (!MillerRabinPrime(output, 100));
+            } while (!MillerRabinPrime(output, 5));
             Console.WriteLine("------------");
             return output;
         }
