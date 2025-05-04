@@ -27,6 +27,10 @@ namespace OpenCryptograph
 
             privateKey = ExtendedGCF(constantKey,(p - 1) * (q - 1));
         }
+        public BigInteger Encrypt(string input)
+        {
+            return Encrypt(input, publicKey);
+        }
         public static BigInteger Encrypt(string input, BigInteger publicKey)
         {
             BigInteger output = 0;
