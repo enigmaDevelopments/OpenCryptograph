@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections.ObjectModel;
 
 namespace OpenCryptograph
 {
@@ -17,9 +18,12 @@ namespace OpenCryptograph
         //e
         public const int constantKey = 65537;
         private readonly Random random;
-        public Key():this(Environment.TickCount){ }
-        Key(BigInteger seed)
+        public readonly int primeBytes;
+        Key(int seed = 0, int primeBytes = 256)
         {
+            this.primeBytes = primeBytes;
+            if (seed == 0)
+                seed = Environment.TickCount;
             random = new Random(seed);
             BigInteger p = GetPrime();
             BigInteger q = GetPrime();
@@ -63,12 +67,12 @@ namespace OpenCryptograph
 
         private BigInteger GetPrime()
         {
-            byte[] bytes = new byte[256];
+            byte[] bytes = new byte[primeBytes];
             BigInteger output;
             do
             {
                 random.NextBytes(bytes);
-                bytes[255] |= 0x80;
+                bytes[primeBytes-1] |= 0x80;
                 output = new BigInteger(bytes);
                 output = BigInteger.Abs(output);
                 output |= 0x03;
@@ -83,7 +87,7 @@ namespace OpenCryptograph
             BigInteger exp = input >> 1;
             for (int i = 0; i < certanty; i++)
             {
-                byte[] bytes = new byte[255];
+                byte[] bytes = new byte[primeBytes-1];
                 random.NextBytes(bytes);
                 BigInteger rand = BigInteger.Abs(new BigInteger(bytes)) + 2;
                 BigInteger num = BigInteger.ModPow(rand, exp, input);
