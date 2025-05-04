@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Drawing;
+using System.Numerics;
 using System.Text;
 
 namespace OpenCryptograph
@@ -11,14 +12,13 @@ namespace OpenCryptograph
         public readonly BigInteger publicKey;
         //e
         public const int constantKey = 65537;
-        private readonly Random random;
+        private BigInteger seed;
         public readonly int primeBytes;
-        public Key(int seed = 0, int primeBytes = 256)
+        public Key(int primeBytes = 256) : this(Environment.TickCount, primeBytes) { }
+        public Key(int seed, int primeBytes = 256)
         {
             this.primeBytes = primeBytes;
-            if (seed == 0)
-                seed = Environment.TickCount;
-            random = new Random(seed);
+            this.seed = new BigInteger(seed);
             BigInteger p = GetPrime();
             BigInteger q = GetPrime();
             publicKey = p * q;
@@ -61,15 +61,12 @@ namespace OpenCryptograph
 
         private BigInteger GetPrime()
         {
-            byte[] bytes = new byte[primeBytes];
             BigInteger output;
             do
             {
-                random.NextBytes(bytes);
-                bytes[primeBytes-1] |= 0x80;
-                output = new BigInteger(bytes);
+                output = Random(primeBytes);
                 output = BigInteger.Abs(output);
-                output |= 0x03;
+                output |= (BigInteger.One << (output.GetByteCount() * 8 - 1)) | 0x03;
                 if ((output - 1) % constantKey == 0) 
                     continue;
             } while (!MillerRabinPrime(output, 5));
@@ -81,9 +78,7 @@ namespace OpenCryptograph
             BigInteger exp = input >> 1;
             for (int i = 0; i < certanty; i++)
             {
-                byte[] bytes = new byte[primeBytes-1];
-                random.NextBytes(bytes);
-                BigInteger rand = BigInteger.Abs(new BigInteger(bytes)) + 2;
+                BigInteger rand = BigInteger.Abs(Random(primeBytes-1)) + 2;
                 BigInteger num = BigInteger.ModPow(rand, exp, input);
                 if (num == 1 || num == input - 1)
                     return true;
@@ -104,6 +99,11 @@ namespace OpenCryptograph
             BigInteger x = y1;
             BigInteger y = x1 - y1 * (a / b);
             return (x, y);
+        }
+        private BigInteger Random(int Size)
+        {
+            seed = Hash.Shake128(seed, Size);
+            return seed;
         }
     }
 }
