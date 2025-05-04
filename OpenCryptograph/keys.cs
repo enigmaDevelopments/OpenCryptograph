@@ -1,11 +1,5 @@
-﻿using System;
-using System.Numerics;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Numerics;
 using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Collections.ObjectModel;
 
 namespace OpenCryptograph
 {
@@ -19,7 +13,7 @@ namespace OpenCryptograph
         public const int constantKey = 65537;
         private readonly Random random;
         public readonly int primeBytes;
-        Key(int seed = 0, int primeBytes = 256)
+        public Key(int seed = 0, int primeBytes = 256)
         {
             this.primeBytes = primeBytes;
             if (seed == 0)
