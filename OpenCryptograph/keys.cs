@@ -6,7 +6,7 @@ namespace OpenCryptograph
     public class Key
     {
         //d
-        public readonly BigInteger privateKey;
+        private readonly BigInteger privateKey;
         //n
         public readonly BigInteger publicKey;
         //e
