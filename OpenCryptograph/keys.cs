@@ -15,7 +15,6 @@ namespace OpenCryptograph
         //n
         public readonly BigInteger publicKey;
         //e
-        //public const int constantKey = 11;
         public const int constantKey = 65537;
         private readonly Random random;
         public Key()
@@ -23,10 +22,6 @@ namespace OpenCryptograph
             random = new Random();
             BigInteger p = GetPrime();
             BigInteger q = GetPrime();
-            Console.WriteLine("P: " + p);
-            Console.WriteLine("Q: " + q);
-            //BigInteger p = 911;
-            //BigInteger q = 997;
             publicKey = p * q;
 
 
@@ -37,34 +32,26 @@ namespace OpenCryptograph
             BigInteger output = 0;
             BigInteger blockSize = BigInteger.Pow(256,publicKey.GetByteCount()-1);
             BigInteger parsedInput = new BigInteger(Encoding.UTF8.GetBytes(input));
-            Console.WriteLine("Parsed: " + parsedInput.ToString("x2"));
             while (0 < parsedInput)
             {
 
                 BigInteger m = parsedInput % blockSize;
                 parsedInput /= blockSize;
-                Console.WriteLine("Block: " + Encoding.ASCII.GetString(m.ToByteArray()));
-                Console.WriteLine("Num: " + m.ToString("x2"));
                 m = BigInteger.ModPow(m, constantKey, publicKey);
-                Console.WriteLine("Encrypted: " + m.ToString("x2"));
-                Console.WriteLine("Length: " + m.ToByteArray().Length);
                 output *= BigInteger.Pow(256, publicKey.GetByteCount());
                 output += m;
             }
-            Console.WriteLine("Encrypted: " + output.ToString("x2"));
             return output;
         }
         public string Decrypt(BigInteger input)
         {
             BigInteger output = 0;
             BigInteger blockSize = BigInteger.Pow(256, publicKey.GetByteCount());
-
             while (0 < input)
             {
                 BigInteger m = input % blockSize;
                 input /= blockSize;
                 m = BigInteger.ModPow(m, privateKey, publicKey);
-                Console.WriteLine("Decrypted: " + m.ToString("x2"));
                 output *= blockSize;
                 output += m%blockSize;
             }
@@ -82,11 +69,9 @@ namespace OpenCryptograph
                 output = new BigInteger(bytes);
                 output = BigInteger.Abs(output);
                 output |= 0x03;
-                Console.WriteLine(output);
                 if ((output - 1) % constantKey == 0) 
                     continue;
             } while (!MillerRabinPrime(output, 5));
-            Console.WriteLine("------------");
             return output;
         }
 
