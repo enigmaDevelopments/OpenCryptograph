@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Text;
 
 namespace OpenCryptograph
@@ -15,10 +14,12 @@ namespace OpenCryptograph
         private BigInteger seed;
         public readonly int primeBytes;
         public Key(int primeBytes = 256) : this(Environment.TickCount, primeBytes) { }
-        public Key(int seed, int primeBytes = 256)
+        public Key(int seed, int primeBytes = 256) : this(new BigInteger(seed),primeBytes){}
+        public Key(string seed,  int primeBytes = 256) : this(new BigInteger(Encoding.UTF8.GetBytes(seed)), 256) { }
+        public Key(BigInteger seed, int primeBytes = 256)
         {
             this.primeBytes = primeBytes;
-            this.seed = new BigInteger(seed);
+            this.seed = seed;
             BigInteger p = GetPrime();
             BigInteger q = GetPrime();
             publicKey = p * q;
