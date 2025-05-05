@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace OpenCryptograph
@@ -59,6 +60,10 @@ namespace OpenCryptograph
             return output;
         }
         public string Decrypt(BigInteger input)
+        {
+            return Decrypt(input,publicKey,privateKey);
+        }
+        public static string Decrypt(BigInteger input,BigInteger publicKey, BigInteger privateKey)
         {
             BigInteger output = 0;
             BigInteger blockSize = BigInteger.Pow(256, publicKey.GetByteCount());
