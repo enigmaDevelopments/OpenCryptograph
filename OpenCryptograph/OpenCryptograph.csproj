@@ -4,6 +4,17 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>OpenCryptograph</Title>
+    <PackageId>EnigmaDevelopments.Security.$(AssemblyName)</PackageId>
+    <Company>EnigmaDevelopments</Company>
+    <Version>$(VersionPrefix)</Version>
+    <Authors>EnigmaDevelopments</Authors>
+    <Description>Simple cryptoGraph package that implments custom versions of SHA3 hashing and RSA encryption. This was made for a college project and while it should be prettry good at what it sets out to do, I wouldnt trust it for high security applications</Description>
+    <Copyright>MIT</Copyright>
+    <PackageProjectUrl>https://github.com/enigmaDevelopments/OpenCryptograph</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/enigmaDevelopments/OpenCryptograph</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageReleaseNotes>inital release</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
