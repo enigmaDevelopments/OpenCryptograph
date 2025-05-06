@@ -43,8 +43,6 @@ namespace Website.Controllers
                 Console.WriteLine(e);
             }
             return View("Index");
-            
-
         }
         public IActionResult Send(string username, string message)
         {
@@ -59,6 +57,16 @@ namespace Website.Controllers
                 Console.WriteLine(e);
             }
             return View("Message");
+        }
+        public IActionResult Decrypt(Key k,List<BigInteger> messages)
+        {
+            string output = "";
+            foreach (BigInteger message in messages)
+            {
+                output += k.Decrypt(message) + "          ";
+            }
+            ViewBag.Messages = output;
+            return View("Messages");
         }
 
         public IActionResult Index()
