@@ -26,7 +26,12 @@ jobs:
     - name: Build
       run: dotnet build --no-restore ./Website
     - name: Test
-      run: dotnet test --no-build --verbosity normal ./Website
+      run: dotnet test --no-build --verbosity normal 
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./Website/wwwroot
 
-    - name: Run Application
-      run: dotnet run --project ./Website
+    # - name: Run Application
+    #   run: dotnet run --project ./Website
