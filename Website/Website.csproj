@@ -10,4 +10,8 @@
     <Compile Remove="Views\Home\Message.cshtml.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OpenCryptograph\OpenCryptograph.csproj" />
+  </ItemGroup>
+
 </Project>
