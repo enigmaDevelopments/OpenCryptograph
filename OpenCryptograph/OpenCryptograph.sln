@@ -11,6 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "..\Debugger\Deb
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website", "..\Website\Website.csproj", "{BBEBFF87-FDB9-4567-9023-98ADA606A665}"
+	ProjectSection(ProjectDependencies) = postProject
+		{14EDC4AE-92C4-4FFA-817E-1E6912C79B7D} = {14EDC4AE-92C4-4FFA-817E-1E6912C79B7D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
