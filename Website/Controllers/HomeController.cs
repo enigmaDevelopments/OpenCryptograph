@@ -3,8 +3,6 @@ using System.Diagnostics;
 using Website.Models;
 using OpenCryptograph;
 using System.Numerics;
-using System.Collections.Generic;
-
 namespace Website.Controllers
 {
     class Info
@@ -32,8 +30,9 @@ namespace Website.Controllers
             BigInteger usernameHash = Hash.Shake128(username, 2048);
             BigInteger passwordHash = Hash.Shake128(username + password, 2048);
             if (!users.ContainsKey(usernameHash)) {
-                Key key = new Key(Hash.Shake128(username + password + username, 1024));
+                Key key = new Key(Hash.Shake128(username + password + username, 2048),128);
                 users.Add(usernameHash, new Info(passwordHash, key.publicKey));
+                return View("Messages");
             }
             return View("Index");
         }
