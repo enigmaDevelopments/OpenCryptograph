@@ -2,7 +2,7 @@
     ViewData["Title"] = "Message";
 }
 <body>
-<p>Username: @Html.TextBox("Username", null)</p>
-<p>Message: @Html.TextBox("Password", null)</p>
+    <p>Username: <input id="Username-message" type="text" size="40" /></p>
+    <p>Message: <input id="Message" type="text" size="40"/></p>
+    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Send">Send</a>
  </body>
-<button>Send</button>

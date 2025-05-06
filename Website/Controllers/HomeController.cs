@@ -12,6 +12,16 @@ namespace Website.Controllers
         {
             _logger = logger;
         }
+        public IActionResult SignIn()
+        {
+            Console.WriteLine("test");
+            return View();
+        }
+        public IActionResult Send()
+        {
+            Console.WriteLine("test");
+            return View("Message");
+        }
 
         public IActionResult Index()
         {

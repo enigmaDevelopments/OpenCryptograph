@@ -3,8 +3,8 @@
 }
 <body>
 <div class="text-left">
-    <p>Username: @Html.TextBox("Username",null)</p>
-    <p>Password: @Html.TextBox("Password", null)</p>
-    <button>Sign in</button>
+        <p>Username: <input id="Username" type="text" size="40" runat="server" /></p>
+        <p>Password: <input id="Password" type="text" size="40" runat="server" /></p>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SignIn">Sign in</a>
 </div>
 </body>
