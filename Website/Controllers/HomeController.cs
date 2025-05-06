@@ -39,8 +39,9 @@ namespace Website.Controllers
         }
         public IActionResult Send(string username, string message)
         {
-            Console.WriteLine(username);
-            Console.WriteLine(message);
+            BigInteger usernameHash = Hash.Shake128(username, 2048);
+            if (users.ContainsKey(usernameHash))
+                users[usernameHash].messages.Add(Key.Encrypt(message, users[usernameHash].publicKey));
             return View("Message");
         }
 
