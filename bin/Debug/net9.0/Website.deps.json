@@ -1,0 +1,53 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "Website/1.0.0": {
+        "dependencies": {
+          "EnigmaDevelopments.Security.OpenCryptograph": "1.0.0",
+          "OpenCryptograph": "1.0.0.0"
+        },
+        "runtime": {
+          "Website.dll": {}
+        }
+      },
+      "EnigmaDevelopments.Security.OpenCryptograph/1.0.0": {
+        "runtime": {
+          "OpenCryptograph.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "OpenCryptograph/1.0.0.0": {
+        "runtime": {
+          "OpenCryptograph.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Website/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EnigmaDevelopments.Security.OpenCryptograph/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "OpenCryptograph/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
