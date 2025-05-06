@@ -27,20 +27,37 @@ namespace Website.Controllers
         }
         public IActionResult SignIn(string username, string password)
         {
-            BigInteger usernameHash = Hash.Shake128(username, 2048);
-            BigInteger passwordHash = Hash.Shake128(username + password, 2048);
-            if (!users.ContainsKey(usernameHash)) {
-                Key key = new Key(Hash.Shake128(username + password + username, 2048),128);
-                users.Add(usernameHash, new Info(passwordHash, key.publicKey));
-                return View("Messages");
+            try
+            {
+                BigInteger usernameHash = Hash.Shake128(username, 2048);
+                BigInteger passwordHash = Hash.Shake128(username + password, 2048);
+                if (!users.ContainsKey(usernameHash))
+                {
+                    Key key = new Key(Hash.Shake128(username + password + username, 2048), 128);
+                    users.Add(usernameHash, new Info(passwordHash, key.publicKey));
+                    return View("Messages");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
             return View("Index");
+            
+
         }
         public IActionResult Send(string username, string message)
         {
-            BigInteger usernameHash = Hash.Shake128(username, 2048);
-            if (users.ContainsKey(usernameHash))
-                users[usernameHash].messages.Add(Key.Encrypt(message, users[usernameHash].publicKey));
+            try
+            {
+                BigInteger usernameHash = Hash.Shake128(username, 2048);
+                if (users.ContainsKey(usernameHash))
+                    users[usernameHash].messages.Add(Key.Encrypt(message, users[usernameHash].publicKey));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             return View("Message");
         }
 
