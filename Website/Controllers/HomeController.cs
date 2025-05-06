@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Website.Models;
 using OpenCryptograph;
 using System.Numerics;
+using System.Web;
 namespace Website.Controllers
 {
     class Info
@@ -49,6 +50,7 @@ namespace Website.Controllers
         {
             try
             {
+                message = HttpUtility.HtmlEncode(message);
                 BigInteger usernameHash = Hash.Shake128(username, 2048);
                 if (users.ContainsKey(usernameHash))
                     users[usernameHash].messages.Add(Key.Encrypt(message, users[usernameHash].publicKey));
