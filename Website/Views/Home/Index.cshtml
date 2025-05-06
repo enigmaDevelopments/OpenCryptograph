@@ -1,10 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<body>
-<div class="text-left">
-        <p>Username: <input id="Username" type="text" size="40" runat="server" /></p>
-        <p>Password: <input id="Password" type="text" size="40" runat="server" /></p>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SignIn">Sign in</a>
-</div>
-</body>
+<form asp-controller="Home" asp-action="SignIn" method="post">
+    <body>
+        <p>Username: <input id="Username" name="Username" type="text" size="40" runat="server" /></p>
+        <p>Password: <input id="Password" name="Password" type="text" size="40" runat="server" /></p>
+        <button type="submit">Sign in</button>
+    </body>
+</form>

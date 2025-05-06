@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Website.Models;
+using System.Numerics;
 
 namespace Website.Controllers
 {
@@ -12,14 +13,17 @@ namespace Website.Controllers
         {
             _logger = logger;
         }
-        public IActionResult SignIn()
+        public IActionResult SignIn(string username, string password)
         {
-            Console.WriteLine("test");
-            return View();
+            Console.WriteLine(username);
+            Console.WriteLine(password);
+            
+            return View("Index");
         }
-        public IActionResult Send()
+        public IActionResult Send(string username, string message)
         {
-            Console.WriteLine("test");
+            Console.WriteLine(username);
+            Console.WriteLine(message);
             return View("Message");
         }
 

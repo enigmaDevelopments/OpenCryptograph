@@ -1,8 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Message";
 }
-<body>
-    <p>Username: <input id="Username-message" type="text" size="40" /></p>
-    <p>Message: <input id="Message" type="text" size="40"/></p>
-    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Send">Send</a>
- </body>
+<form asp-controller="Home" asp-action="Send" method="post">
+    <body>
+        <p>Username: <input id="Username-message" name="username" type="text" size="40" /></p>
+        <p>Message: <input id="Message" name="message" type="text" size="100"/></p>
+        <button type="submit">Send</button>
+     </body>
+</form>
