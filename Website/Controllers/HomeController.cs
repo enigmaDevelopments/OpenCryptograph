@@ -18,7 +18,7 @@ namespace Website.Controllers
     }
     public class HomeController : Controller
     {
-        Dictionary<BigInteger, Info> users = new Dictionary<BigInteger, Info>();
+        private static Dictionary<BigInteger, Info> users = new Dictionary<BigInteger, Info>();
         private readonly ILogger<HomeController> _logger;
         
         public HomeController(ILogger<HomeController> logger)
@@ -35,8 +35,9 @@ namespace Website.Controllers
                 {
                     Key key = new Key(Hash.Shake128(username + password + username, 2048), 128);
                     users.Add(usernameHash, new Info(passwordHash, key.publicKey));
-                    return View("Messages");
                 }
+                else if (users[usernameHash].password == passwordHash)
+                    return Decrypt(new Key(Hash.Shake128(username + password + username, 2048), 128), users[usernameHash].messages);
             }
             catch (Exception e)
             {
